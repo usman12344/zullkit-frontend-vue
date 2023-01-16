@@ -11,7 +11,7 @@ const category = ref({})
 
 async function getItem() {
     try {
-        const response = await axios.get('http://zullkit-backend.buildwithangga.id/api/categories?id='+ route.params.id +'&show_product=1')
+        const response = await axios.get('https://zullkit-backend.buildwithangga.id/api/categories?id='+ route.params.id +'&show_product=1')
         items.value = response.data.data.products
         category.value = response.data.data
         console.log(response.data)

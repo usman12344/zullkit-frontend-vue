@@ -3,15 +3,20 @@ import Gallery from '@/components/detail/Gallery.vue'
 import axios from 'axios';
 import { ref, onMounted, computed } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
+import { useUserStore } from '@/stores/user'
+import { storeToRefs  } from 'pinia'
+
+const { user } = storeToRefs(useUserStore())
+const { fetchUser } = useUserStore()
 
 const item = ref(false)
 const route = useRoute()
 
 async function getProduct() {
     try {
-        const response = await axios.get('http://zullkit-backend.buildwithangga.id/api/products?id='+ route.params.id)
+        const response = await axios.get('https://zullkit-backend.buildwithangga.id/api/products?id='+ route.params.id)
         item.value = response.data.data;
-        console.log(response.data)
+        // console.log(response.data)
     } catch (error) {
         console.log(error)
     }
@@ -22,7 +27,8 @@ async function getProduct() {
   })
 
   onMounted(() => {
-    window.scrollTo(0 , 0);
+    fetchUser();
+    window.scrollTo(0, 0);
     getProduct();
   })
 
@@ -80,12 +86,21 @@ async function getProduct() {
                 </li>
               </ul>
               </div>
-              <RouterLink
-                to="/pricing"
+              <div v-if="user.data">
+              <a v-if="user.data.subscription.length > 0"
+                :href="item.file"
                 class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-md md:px-10 hover:shadow"
               >
                 Download Now
-            </RouterLink>
+            </a>
+            <RouterLink 
+              v-else
+              to="/pricing"
+              class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-md md:px-10 hover:shadow"
+            >
+            Subscribe
+          </RouterLink>
+          </div>
             </div>
           </div>
         </aside>

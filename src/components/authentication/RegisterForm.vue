@@ -1,7 +1,12 @@
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink,useRouter } from 'vue-router';
+import {  useUserStore } from '../../stores/user';
+
+
+const { fetchUser } = useUserStore()
+const router = useRouter()
 
 const form = ref({
     "name": '',
@@ -12,7 +17,7 @@ const form = ref({
 
 async function register() {
   try {
-    const response = await axios.post('http://zullkit-backend.buildwithangga.id/api/register',{
+    const response = await axios.post('https://zullkit-backend.buildwithangga.id/api/register',{
     name : form.value.name,
     email : form.value.email,
     password : form.value.password,
@@ -21,7 +26,9 @@ async function register() {
     localStorage.setItem("access_token", response.data.data.access_token);
     localStorage.setItem("token_type", response.data.data.token_type);
     console.log(response.data); 
-   
+    fetchUser();
+    router.push('/');
+
   } catch (error) {
     console.error(error);
   }
