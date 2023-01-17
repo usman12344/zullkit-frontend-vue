@@ -16,7 +16,7 @@ const thumbnail = ref(props.defaultImage);
 // ]) 
 
 function ChangeImage(image){
-    this.thumbnail = image
+    thumbnail.value = image
 }
 
 </script>
@@ -26,7 +26,7 @@ function ChangeImage(image){
             <img :src="thumbnail" alt="" class="w-full mt-6 rounded-2xl" />
             <div class="grid grid-cols-4 gap-4 mt-4">
                 <template v-for="gallery in galleries" v-key="gallery.id">
-                    <div @click="ChangeImage(gallery.url)" class="overflow-hidden cursor-pointer rounded-2xl" :class="{ 'ring-2 ring-indigo-500' : defaultImage == gallery.url }">
+                    <div @click="ChangeImage(gallery.url)" class="overflow-hidden cursor-pointer rounded-2xl" :class="{ 'ring-2 ring-indigo-500' : thumbnail == gallery.url }">
                       <img :src="gallery.url" class="w-full" alt="" />
                     </div>
                 </template>
